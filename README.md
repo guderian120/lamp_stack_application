@@ -6,6 +6,7 @@ This project is a LAMP (Linux, Apache, MySQL, PHP) stack application deployed on
 ## Architecture
 The application is deployed with the following AWS components:
 
+![Architecture](media/lampstack_design.png)
 - **VPC**: A custom Virtual Private Cloud with:
   - **Four Subnets**: Two public subnets and two private subnets, distributed across two Availability Zones (AZs) for redundancy.
 - **Auto Scaling Group (ASG)**: 
@@ -137,13 +138,3 @@ The application is deployed with the following AWS components:
 - **RDS Issues**: Confirm security group allows EC2-to-RDS traffic and check database credentials.
 - **Docker Issues**: Ensure Docker Hub credentials are valid and the image is accessible.
 
-## Contributing
-To contribute:
-1. Fork the repository (if applicable).
-2. Create a feature branch (`git checkout -b feature-name`).
-3. Commit changes (`git commit -m "Add feature"`).
-4. Push to the branch (`git push origin feature-name`).
-5. Open a pull request.
-
-## License
-This project is licensed under the MIT License.
