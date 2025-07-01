@@ -10,11 +10,6 @@ permissions:
   id-token: write
   contents: read
 
-env:
-  AWS_REGION: 'eu-west-1'
-  ECR_REPOSITORY: 'lampstack'
-  CONTAINER_NAME: 'lampstack_container'
-  ECR_REGISTRY: '288761743924.dkr.ecr.eu-west-1.amazonaws.com'
 
 jobs:
   build-and-push:
@@ -28,30 +23,30 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: arn:aws:iam::288761743924:role/github-actions-lambda-role
-        aws-region: ${{ env.AWS_REGION }}
+        aws-region: ${{ vars.AWS_REGION }}
         role-session-name: github-actions-ecr-push
 
     - name: Login to Amazon ECR
       id: login-ecr
       run: |
-        aws ecr get-login-password --region ${{ env.AWS_REGION }} | \
-        docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
+        aws ecr get-login-password --region ${{ vars.AWS_REGION }} | \
+        docker login --username AWS --password-stdin ${{ vars.ECR_REGISTRY }}
 
 
     - name: Build Docker image
       run: |
         cd LAMP_STACK_PHP_CODE
-        docker build -t ${{ env.ECR_REPOSITORY }} .
+        docker build -t ${{ vars.ECR_REPOSITORY }} .
         
     - name: Tag Docker image
       run: |
       
-        docker tag ${{ env.ECR_REPOSITORY }}:latest \
-          ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
-        docker tag ${{ env.ECR_REPOSITORY }}:latest \
-          ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+        docker tag ${{ vars.ECR_REPOSITORY }}:latest \
+          ${{ vars.ECR_REGISTRY }}/${{ vars.ECR_REPOSITORY }}:latest
+        docker tag ${{ vars.ECR_REPOSITORY }}:latest \
+          ${{ vars.ECR_REGISTRY }}/${{ vars.ECR_REPOSITORY }}:${{ github.sha }}
 
     - name: Push Docker images
       run: |
-        docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
-        docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+        docker push ${{ vars.ECR_REGISTRY }}/${{ vars.ECR_REPOSITORY }}:latest
+        docker push ${{ vars.ECR_REGISTRY }}/${{ vars.ECR_REPOSITORY }}:${{ github.sha }}
