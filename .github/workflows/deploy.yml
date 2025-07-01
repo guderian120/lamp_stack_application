@@ -7,13 +7,14 @@ on:
     branches: [ main ]
 
 permissions:
-  id-token: write   # Required for OIDC authentication
-  contents: read    # Required to checkout code
+  id-token: write
+  contents: read
 
 env:
-  AWS_REGION: 'eu-west-1'  
-  ECR_REPOSITORY: 'lampstack'  # Just the repository name, not full URI
-  CONTAINER_NAME: 'lampstack_container' 
+  AWS_REGION: 'eu-west-1'
+  ECR_REPOSITORY: 'lampstack'
+  CONTAINER_NAME: 'lampstack_container'
+  ECR_REGISTRY: '288761743924.dkr.ecr.eu-west-1.amazonaws.com'
 
 jobs:
   build-and-push:
@@ -32,9 +33,9 @@ jobs:
 
     - name: Login to Amazon ECR
       id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-      with:
-        registry-ids: 288761743924  # Your AWS account ID
+      run: |
+        aws ecr get-login-password --region ${{ env.AWS_REGION }} | \
+        docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
 
     - name: Change Directory
       run: cd LAMP_STACK_PHP_CODE
@@ -46,11 +47,11 @@ jobs:
     - name: Tag Docker image
       run: |
         docker tag ${{ env.ECR_REPOSITORY }}:latest \
-          288761743924.dkr.ecr.eu-west-1.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
+          ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
         docker tag ${{ env.ECR_REPOSITORY }}:latest \
-          288761743924.dkr.ecr.eu-west-1.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
 
     - name: Push Docker images
       run: |
-        docker push 288761743924.dkr.ecr.eu-west-1.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
-        docker push 288761743924.dkr.ecr.eu-west-1.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+        docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
+        docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
