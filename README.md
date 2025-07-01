@@ -1,6 +1,4 @@
-Here's a clean README.md for your LAMP stack application repository with GitHub Actions CI/CD:
 
-```markdown
 # LAMP Stack Application (PHP)
 
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
