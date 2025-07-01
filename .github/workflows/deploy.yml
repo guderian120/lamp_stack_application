@@ -37,17 +37,15 @@ jobs:
         aws ecr get-login-password --region ${{ env.AWS_REGION }} | \
         docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
 
-    - name: Change Directory
-      run: cd LAMP_STACK_PHP_CODE
-    - name: List Directory
-      run: ls -ltr
 
     - name: Build Docker image
       run: |
+        cd LAMP_STACK_PHP_CODE
         docker build -t ${{ env.ECR_REPOSITORY }} .
         
     - name: Tag Docker image
       run: |
+      
         docker tag ${{ env.ECR_REPOSITORY }}:latest \
           ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
         docker tag ${{ env.ECR_REPOSITORY }}:latest \
