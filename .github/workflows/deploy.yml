@@ -39,6 +39,8 @@ jobs:
 
     - name: Change Directory
       run: cd LAMP_STACK_PHP_CODE
+    - name: List Directory
+      run: ls -ltr
 
     - name: Build Docker image
       run: |
