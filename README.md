@@ -1,4 +1,5 @@
 
+
 # LAMP Stack Application (PHP)
 
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
@@ -6,6 +7,17 @@
 ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
 
 This repository contains the PHP application code for a LAMP (Linux, Apache, MySQL, PHP) stack that is automatically built and deployed using GitHub Actions to AWS ECR.
+
+
+## Infrastructure Provisioning
+
+**For complete infrastructure setup including Terraform modules, networking, and deployment automation, see:**  
+[AWS LAMP Stack Infrastructure Repository](https://github.com/guderian120/lamp_stack_infranstructure)
+
+
+Note: All infrastructure is managed through Terraform in the linked repository above.
+
+
 
 ## 📦 Features
 
